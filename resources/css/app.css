@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+}
+
+/* WELCOME.BLADE.PHP */
+
+.welcome-body {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.welcome-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.welcome-card p {
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+.welcome-card a {
+    min-width: 40%;
+}
+
+.welcome-card button {
+    min-width: 100%;
+}
+
+/* WELCOME.BLADE.PHP */
+
+/* REGISTER.BLADE.PHP */
+
+.register-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* REGISTER.BLADE.PHP */
+
+/* LOGIN.BLADE.PHP */
+
+.login-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#remember_me {
+    margin: 0;
+}
+
+/* LOGIN.BLADE.PHP */
+
+/* EDIT.BLADE.PHP */
+
+.profil-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* EDIT.BLADE.PHP */
