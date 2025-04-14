@@ -9,17 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+ 
     public function up(): void
-    {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->uuid('id')->primary(); 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('adress');
-            $table->string('siret')->unique();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('companies', function (Blueprint $table) {
+        $table->uuid('id')->primary();
+        $table->uuid('user_id');
+        $table->string('name');
+        $table->string('adress');
+        $table->string('email');
+        $table->string('siret')->nullable();
+        $table->timestamps();
+
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+    });
+}
+
 
     /**
      * Reverse the migrations.

@@ -9,15 +9,23 @@
 
     </x-slot>
 
-    <div class="pl-[175px] pt-[50px]">
-        <a href="{{ route('companies.create') }}">
+    <div class="pt-[50px] pl-[100px] pr-[100px] flex flex-col">
+        <p class="mb-[10px] text-[16px]">Vous pouvez ajouter ici une entreprise pour laquelle vous travaillez.</p>
+        <a class="w-[16.3%]" href="{{ route('companies.create') }}">
             <button class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">Ajouter une entreprise</button>
         </a>
 
+
+            @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 mt-4">
+            {{ session('success') }}
+        </div>
+            @endif
+
         @if ($companies->count())
-        <table class="mt-6 w-full text-left border-collapse">
+        <table class="mt-[50px] w-full text-left border-collapse">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gray-800">
                     <th class="p-2">Nom</th>
                     <th class="p-2">Adresse</th>
                     <th class="p-2">Email</th>

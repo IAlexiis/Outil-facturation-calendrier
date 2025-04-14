@@ -8,6 +8,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
+    use HasFactory;
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'name',
+        'adress',
+        'email',
+        'siret',
+        'user_id',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -19,20 +32,14 @@ class Company extends Model
         });
     }
 
-    public function user()
+
+    public function getRouteKeyName()
     {
-
-        return $this->belongsTo(User::class);
-
+        return 'id';
     }
 
-    use HasFactory;
-
-    protected $fillable =[
-        'name',
-        'adress',
-        'email',
-        'siret',
-    ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

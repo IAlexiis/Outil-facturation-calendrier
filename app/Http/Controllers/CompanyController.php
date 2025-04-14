@@ -29,19 +29,28 @@ class CompanyController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name'=>'required|string|max:255',
-            'adress'=>'required|string|max:255',
-            'email'=>'required|string|max:255',
-            'siret'=>'nullable|string|max:14',
-        ]);
-
-        Auth::user()->companies()->create($request->all());
-
-        return redirect()->route('companies.index')->with('success', 'Entreprise ajoutée avec succès.');
+{
+    if (!Auth::check()) {
+        abort(401, 'Non connecté');
     }
 
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'adress' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'siret' => 'nullable|string|max:14',
+    ]);
+
+    $company = Company::create([
+        'name' => $request->name,
+        'adress' => $request->adress,
+        'email' => $request->email,
+        'siret' => $request->siret,
+        'user_id' => Auth::id(), 
+    ]);
+
+    return redirect()->route('companies.index')->with('success', 'Entreprise ajoutée avec succès.');
+}
     /**
      * Display the specified resource.
      */
@@ -55,6 +64,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
+        
         $this->authorizeCompany($company);
         return view('companies.edit', compact('company'));
     }
