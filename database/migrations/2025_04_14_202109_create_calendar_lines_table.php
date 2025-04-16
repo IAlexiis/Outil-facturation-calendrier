@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('start'); 
             $table->dateTime('end');  
             $table->integer('duration_minutes')->nullable(); 
+            $table->decimal('total_hours', 6, 2)->nullable();
             $table->string('location')->nullable(); 
             $table->string('status')->nullable(); 
             $table->boolean('is_billable')->default(true); 

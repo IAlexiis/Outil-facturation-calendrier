@@ -44,4 +44,9 @@ public function getRouteKeyName()
 {
     return 'id'; 
 }
+
+protected $casts = [
+    'invoice_date' => 'datetime',
+];
+
 }

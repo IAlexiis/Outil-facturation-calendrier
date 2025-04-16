@@ -63,7 +63,9 @@ class CalendarController extends Controller
         }
     
         
-        $events = $response->json();
+        $data = $response->json();        
+        $events = $data['events'] ?? [];   
+
     
         foreach ($events as $event) {
 
@@ -81,6 +83,7 @@ class CalendarController extends Controller
                 'duration_minutes' => isset($event['start'], $event['end'])
                     ? Carbon::parse($event['start'])->diffInMinutes(Carbon::parse($event['end']))
                     : null,
+                'total_hours' => $event['totalHours'] ?? null,
                 'location' => $event['location'] ?? null,
                 'status' => null,
                 'is_billable' => true,

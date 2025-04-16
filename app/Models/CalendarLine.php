@@ -21,6 +21,7 @@ class CalendarLine extends Model
         'start',
         'end',
         'duration_minutes',
+        'total_hours',
         'location',
         'status',
         'is_billable',

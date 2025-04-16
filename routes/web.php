@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
 
     
     Route::resource('invoices', InvoiceController::class);
+
+    Route::get('/companies/{company}/invoices', [InvoiceController::class, 'byCompany'])->name('companies.invoices');
+
 });
 
 

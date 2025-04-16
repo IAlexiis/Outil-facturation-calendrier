@@ -1,32 +1,53 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
 
-<x-app-layout>
+<div class="flex justify-center items-center w-FULL h-FULL">
+    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-8 rounded shadow mt-10 print:p-0 print:shadow-none print:bg-white">
 
-
-    <div class="p-6 max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded shadow">
-        @if (session('success'))
-            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
-                {{ session('success') }}
+        <div class="flex justify-between items-center mb-8 gap-[50px]">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Facture</h1>
+                <p class="text-sm text-gray-500">N° {{ $invoice->id }}</p>
+                <p class="text-sm text-gray-500">Émise le : {{ $invoice->invoice_date->format('d/m/Y') }}</p>
             </div>
-        @endif
-
-        <div class="mb-6">
-            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Entreprise</h3>
-            <p class="text-gray-800 dark:text-gray-200">{{ $invoice->company->name }}</p>
-            <p class="text-sm text-gray-500">{{ $invoice->company->adress }}</p>
+            <div class="text-right">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">{{ $invoice->company->name }}</h2>
+                <p class="text-sm text-gray-600 dark:text-gray-300">{{ $invoice->company->adress }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300">{{ $invoice->company->email }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300">SIRET : {{ $invoice->company->siret }}</p>
+            </div>
         </div>
 
+        <hr class="mb-6 border-gray-300 dark:border-gray-700">
+
         <div class="mb-6">
-            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Facturation</h3>
-            <p><strong>Période :</strong> {{ $invoice->period }}</p>
-            <p><strong>Date de facture :</strong> {{ \Carbon\Carbon::parse($invoice->date)->format('d/m/Y') }}</p>
-            <p><strong>Total heures :</strong> {{ $invoice->hours_total }} h</p>
-            <p><strong>Total HT :</strong> {{ number_format($invoice->rising_total, 2) }} €</p>
-            <p><strong>TVA :</strong> {{ number_format($invoice->rising_total * 0.2, 2) }} €</p>
-            <p><strong>Total TTC :</strong> {{ number_format($invoice->rising_total * 1.2, 2) }} €</p>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Détails de la prestation</h3>
+            <ul class="text-sm text-gray-700 dark:text-gray-300 list-disc pl-5">
+                <li><strong>Période :</strong> {{ $invoice->period }}</li>
+                <li><strong>Tarif horaire :</strong> {{ number_format($invoice->hourly_rate, 2, ',', ' ') }} € / heure</li>
+                <li><strong>Nombre total d’heures :</strong> {{ number_format($invoice->total_hours, 2, ',', ' ') }} h</li>
+            </ul>
         </div>
 
-        <x-primary-button onclick="window.print()">Imprimer</x-primary-button>
+        <hr class="mb-6 border-gray-300 dark:border-gray-700">
+
+        <div class="grid grid-cols-2 gap-4 text-sm text-gray-800 dark:text-gray-200">
+            <div><strong>Total HT :</strong></div>
+            <div class="text-right">{{ number_format($invoice->total, 2, ',', ' ') }} €</div>
+
+            <div><strong>TVA ({{ $invoice->tva_rate ?? 0 }}%) :</strong></div>
+            <div class="text-right">{{ number_format($invoice->total * ($invoice->tva_rate ?? 0) / 100, 2, ',', ' ') }} €</div>
+
+            <div class="border-t mt-2 pt-2 text-lg font-bold">Total TTC :</div>
+            <div class="border-t mt-2 pt-2 text-right text-lg font-bold">
+                {{ number_format($invoice->total * (1 + ($invoice->tva_rate ?? 0) / 100), 2, ',', ' ') }} €
+            </div>
+        </div>
+
+        <div class="mt-8 text-right print:hidden">
+            <x-primary-button onclick="window.print()">Imprimer la facture</x-primary-button>
+        </div>
     </div>
-</x-app-layout>
+</div>
+    
+

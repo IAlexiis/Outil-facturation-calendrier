@@ -38,7 +38,7 @@ class CompanyController extends Controller
         'name' => 'required|string|max:255',
         'adress' => 'required|string|max:255',
         'email' => 'required|email|max:255',
-        'siret' => 'nullable|string|max:14',
+        'siret' => 'nullable|string|max:30',
     ]);
 
     $company = Company::create([
@@ -80,7 +80,7 @@ class CompanyController extends Controller
             'name' => 'required|string|max:255',
             'adress' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'siret' => 'nullable|string|max:14',
+            'siret' => 'nullable|string|max:30',
         ]);
 
         $company->update($request->all());
