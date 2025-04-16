@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+        
+            $table->uuid('company_id');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+        
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        
             $table->date('invoice_date');
             $table->string('period');
             $table->decimal('total_hours', 15, 2);
             $table->decimal('hourly_rate', 15, 2);
             $table->decimal('total', 15, 2);
             $table->string('pdf_path')->nullable();
+            
             $table->timestamps();
         });
     }

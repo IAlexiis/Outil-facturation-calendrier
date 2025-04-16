@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('companies', CompanyController::class);
+
+    Route::resource('calendars', CalendarController::class);
+
+    
+    Route::resource('invoices', InvoiceController::class);
 });
+
+
 
 require __DIR__.'/auth.php';

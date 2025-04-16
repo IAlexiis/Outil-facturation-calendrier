@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-
-
-class Invoice extends Model
+class Calendar extends Model
 {
+    use HasFactory;
 
-public $incrementing = false;
-protected $keyType = 'string';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'user_id',
         'company_id',
-        'invoice_date',
-        'period',
-        'total_hours',
-        'hourly_rate',
-        'total',
-        'pdf_path',
+        'name',
+        'source_file',
+        'description',
     ];
 
     protected static function boot()
@@ -36,12 +32,12 @@ protected $keyType = 'string';
     }
 
     public function company()
-{
-    return $this->belongsTo(Company::class, 'company_id'); 
-}
+    {
+        return $this->belongsTo(Company::class);
+    }
 
-public function getRouteKeyName()
-{
-    return 'id'; 
-}
+    public function lines()
+    {
+        return $this->hasMany(CalendarLine::class);
+    }
 }

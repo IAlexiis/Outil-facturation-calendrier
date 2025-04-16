@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('calendars', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title');
-            $table->dateTime('date_debut');
-            $table->dateTime('date_end');
-            $table->string('group_')->nullable();
+            $table->uuid('company_id');
+            $table->string('name')->nullable(); 
+            $table->string('source_file')->nullable(); 
+            $table->text('description')->nullable(); 
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('calendars');
     }
 };
