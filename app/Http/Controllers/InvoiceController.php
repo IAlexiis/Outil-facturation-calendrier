@@ -59,20 +59,32 @@ class InvoiceController extends Controller
             'period'        => $request->start_date . ' → ' . $request->end_date,
             'total_hours'   => round($totalHeures, 2),
             'hourly_rate'   => $hourlyRate,
+            'tva_rate'      => $tvaRate,
             'total'         => $montantHT,
             'pdf_path'      => null,
         ]);
 
         return redirect()
             ->route('invoices.show', $invoice->id)
-            ->with('success', 'Facture générée avec succès ✅');
+            ->with('success', 'Facture générée avec succès');
     }
 
     public function show($id)
     {
         $invoice = Invoice::with('company')->findOrFail($id);
 
-        return view('invoices.show', compact('invoice'));
+        [$start, $end] = explode(' → ', $invoice->period);
+        $start = Carbon::parse($start)->startOfDay();
+        $end = Carbon::parse($end)->endOfDay();
+    
+        $events = CalendarLine::whereHas('calendar', function ($query) use ($invoice) {
+            $query->where('company_id', $invoice->company_id);
+        })
+        ->whereBetween('start', [$start, $end])
+        ->where('is_billable', true)
+        ->get();
+    
+        return view('invoices.show', compact('invoice', 'events'));
     }
 
     public function byCompany(Company $company)
@@ -86,6 +98,6 @@ public function destroy(Invoice $invoice)
 {
     $invoice->delete();
 
-    return redirect()->back()->with('success', 'Facture supprimée avec succès 🗑️');
+    return redirect()->back()->with('success', 'Facture supprimée avec succès');
 }
 }

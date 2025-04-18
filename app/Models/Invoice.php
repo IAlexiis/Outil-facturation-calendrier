@@ -20,6 +20,7 @@ protected $keyType = 'string';
         'period',
         'total_hours',
         'hourly_rate',
+        'tva_rate',
         'total',
         'pdf_path',
     ];

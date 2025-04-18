@@ -1,7 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
 
-<div class="flex justify-center items-center w-FULL h-FULL">
+
     <div class="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-8 rounded shadow mt-10 print:p-0 print:shadow-none print:bg-white">
 
         <div class="flex justify-between items-center mb-8 gap-[50px]">
@@ -29,6 +29,40 @@
             </ul>
         </div>
 
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Détail des événements facturés</h3>
+
+            <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border-collapse">
+                <thead class="bg-gray-200 dark:bg-gray-700">
+                    <tr>
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Module</th>
+                        <th class="p-2 text-right">Heures</th>
+                        <th class="p-2 text-right">Montant HT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($events as $event)
+                        <tr class="border-b dark:border-gray-600">
+                            <td class="p-2">{{ \Carbon\Carbon::parse($event->start)->format('d/m/Y') }}</td>
+                            <td class="p-2">{{ $event->title }}</td>
+                            <td class="p-2 text-right">{{ number_format($event->total_hours, 2, ',', ' ') }}</td>
+                            <td class="p-2 text-right">
+                                {{ number_format($event->total_hours * $invoice->hourly_rate, 2, ',', ' ') }} €
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot class="font-semibold border-t dark:border-gray-700">
+                    <tr>
+                        <td colspan="2" class="p-2 text-right">Total</td>
+                        <td class="p-2 text-right">{{ number_format($invoice->total_hours, 2, ',', ' ') }} h</td>
+                        <td class="p-2 text-right">{{ number_format($invoice->total, 2, ',', ' ') }} €</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
         <hr class="mb-6 border-gray-300 dark:border-gray-700">
 
         <div class="grid grid-cols-2 gap-4 text-sm text-gray-800 dark:text-gray-200">
@@ -36,7 +70,9 @@
             <div class="text-right">{{ number_format($invoice->total, 2, ',', ' ') }} €</div>
 
             <div><strong>TVA ({{ $invoice->tva_rate ?? 0 }}%) :</strong></div>
-            <div class="text-right">{{ number_format($invoice->total * ($invoice->tva_rate ?? 0) / 100, 2, ',', ' ') }} €</div>
+            <div class="text-right">
+                {{ number_format($invoice->total * ($invoice->tva_rate ?? 0) / 100, 2, ',', ' ') }} €
+            </div>
 
             <div class="border-t mt-2 pt-2 text-lg font-bold">Total TTC :</div>
             <div class="border-t mt-2 pt-2 text-right text-lg font-bold">
@@ -45,9 +81,7 @@
         </div>
 
         <div class="mt-8 text-right print:hidden">
-            <x-primary-button onclick="window.print()">Imprimer la facture</x-primary-button>
+            <x-primary-button onclick="window.print()">🖨️ Imprimer la facture</x-primary-button>
         </div>
     </div>
-</div>
-    
 
