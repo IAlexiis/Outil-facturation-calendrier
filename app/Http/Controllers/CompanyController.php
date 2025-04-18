@@ -25,11 +25,12 @@ class CompanyController extends Controller
         return view('companies.create');
     }
 
+        
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
+{   
     if (!Auth::check()) {
         abort(401, 'Non connecté');
     }
